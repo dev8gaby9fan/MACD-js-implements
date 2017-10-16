@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MEDA</title>
+	<script src="js/data.js"></script>
+	<script src="js/MACD.js"></script>
+	<script src="https://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+</head>
+<body>
+
+	<div id="container" style="min-width:800px;height:400px"></div>
+<script type="text/javascript">
+	let EMAS = EMASL(json,12);//计算EMA12
+	let EMAL = EMASL(json,26);//计算EMA26
+
+	let dif = DIF(json);//DIF = EMA12 -EMA26
+
+	console.log(dif);
+
+
+	let dea = DEA(json,9);//DEA
+
+	console.log(dea);
+
+	let bar = BAR(json);
+
+	let time = [];
+	for(let i=0;i<json.length;i++){
+		time.push(json[i].trddate);
+	}
+
+	var chart = new Highcharts.Chart('container', {// 图表初始化函数，其中 container 为图表的容器 div               
+    chart: {
+        type: 'line',
+        backgroundColor:'#323749',
+        height: '470px'
+                                   //指定图表的类型，默认是折线图（line）
+    },
+    title: {
+        text: 'MACD'                 //指定图表标题
+    },
+    xAxis: {
+       lineColor: '#5C6475',
+        lineWidth: 0.5,
+        tickColor:'#5C6475',
+        categories:time
+    },
+    yAxis: {
+        title: {
+            text: 'MACD'                 //指定y轴的标题
+        },
+        gridLineColor: '#5C6475',
+        gridLineWidth: 0.5
+    },
+    series: [{                                 //指定数据列
+        name: 'DIF',                          //数据列名
+        data: dif,
+        // color:'#ffff00',
+        color:'#ffffff',
+        marker: {
+          enabled: false,
+        }                       //数据
+    }, {
+        name: 'DEA',
+        data: dea,
+        color:'#ffff00',
+        marker: {
+          enabled: false,
+        }
+    }
+    ,{
+    	name:'BAR',
+    	data:bar,
+    	color:'#ffffff',
+    	marker: {
+          enabled: false,
+        }
+    }
+    ]
+});
+</script>
+</body>
+</html>
